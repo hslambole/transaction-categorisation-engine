@@ -9,3 +9,24 @@ services:
       MYSQL_PASSWORD: app
     ports:
       - "3307:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-proot" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build: .
+    container_name: tce-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/transaction_engine
+      SPRING_DATASOURCE_USERNAME: app
+      SPRING_DATASOURCE_PASSWORD: app
+      CATEGORIZATION_FALLBACK_ENABLED: "false"
+      CATEGORIZATION_ASYNC_CORE_SIZE: "2"
+      CATEGORIZATION_ASYNC_MAX_SIZE: "8"

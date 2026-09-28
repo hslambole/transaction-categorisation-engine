@@ -1,0 +1,17 @@
+categorisation:
+  fallback:
+    enabled: false
+  async:
+    core-size: 1
+    max-size: 2
+
+llm:
+  api-url: ""
+  api-key: ""
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
